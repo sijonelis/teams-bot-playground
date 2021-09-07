@@ -1,14 +1,15 @@
-import { ActionTypes, CardFactory, TurnContext, TextFormatTypes } from "botbuilder";
+import { CardFactory, TurnContext, TextFormatTypes } from "botbuilder";
 import { ComponentDialog, DialogContext } from "botbuilder-dialogs";
-
-const baseUrl = 'http://localhost:5000';
-const axios = require('axios');
-
+import { DefaultCard } from "../cards/DefaultCard";
+import { FeedCard } from "../cards/FeedCard";
+import { QueryCard } from "../cards/QueryCard";
+import { AxiosHandler } from "../networking/AxiosHandler";
 export class RootDialog extends ComponentDialog {
-
-
+  axiosHandler = null;
+  
   constructor(id: string) {
     super(id);
+    this.axiosHandler = new AxiosHandler();
   }
 
   async onBeginDialog(innerDc: DialogContext, options: {} | undefined) {
@@ -36,84 +37,36 @@ export class RootDialog extends ComponentDialog {
 
     switch (command) {
       case "feedtext": {
-        var feedResponse =  await this.executeFeed(text);
-        await innerDc.context.sendActivity("" + feedResponse);
+        var feedResponse =  await this.axiosHandler.executeFeed(text);
+        const feedCard = CardFactory.adaptiveCard(FeedCard.build);
+        await innerDc.context.sendActivity({ attachments: [feedCard] });
         return await innerDc.cancelAllDialogs();
       }
       case "query": {
-        var queryResponse = await this.executeQuery(text);
-        await innerDc.context.sendActivity("" + queryResponse);
+        var queryResponse = await this.axiosHandler.executeQuery(text);
+        const card = CardFactory.adaptiveCard(QueryCard.build(queryResponse) );
+        await innerDc.context.sendActivity({ attachments: [card] });
         return await innerDc.cancelAllDialogs();
       }
-      case "show": {
-        if (innerDc.context.activity.conversation.isGroup) {
-          await innerDc.context.sendActivity(
-            `Sorry, currently TeamsFX SDK doesn't support Group/Team/Meeting Bot SSO. To try this command please install this app as Personal Bot and send "show".`
-          );
-          return await innerDc.cancelAllDialogs();
-        }
-        break;
-      }
+      // case "show": {
+      //   if (innerDc.context.activity.conversation.isGroup) {
+      //     await innerDc.context.sendActivity(
+      //       `Sorry, currently TeamsFX SDK doesn't support Group/Team/Meeting Bot SSO. To try this command please install this app as Personal Bot and send "show".`
+      //     );
+      //     return await innerDc.cancelAllDialogs();
+      //   }
+      //   break;
+      // }
       case "intro": {
-        const cardButtons = [
-          {
-            type: ActionTypes.ImBack,
-            title: "Show profile",
-            value: "show",
-          },
-        ];
-        const card = CardFactory.heroCard("Introduction", null, cardButtons, {
-          text: `This Bot has implemented single sign-on (SSO) using the identity of the user signed into the Teams client. See the <a href="https://aka.ms/teamsfx-docs-auth">TeamsFx authentication document</a> and code in <pre>bot/dialogs/mainDialog.js</pre> to learn more about SSO.<br>Type <strong>show</strong> or click the button below to show your profile by calling Microsoft Graph API with SSO. To learn more about building Bot using Microsoft Teams Framework, please refer to the <a href="https://aka.ms/teamsfx-docs">TeamsFx documentation</a>.`,
-        });
-
+        const card = DefaultCard.build();
         await innerDc.context.sendActivity({ attachments: [card] });
         return await innerDc.cancelAllDialogs();
       }
       default: {
-        const cardButtons = [
-          {
-            type: ActionTypes.ImBack,
-            title: "Show introduction card",
-            value: "intro",
-          },
-        ];
-        const card = CardFactory.heroCard("", null, cardButtons, {
-          text: `This is a hello world Bot built with Microsoft Teams Framework, which is designed for illustration purposes. This Bot by default will not handle any specific question or task.<br>Please type <strong>intro</strong> to see the introduction card.`,
-        });
+        const card = DefaultCard.build();
         await innerDc.context.sendActivity({ attachments: [card] });
         return await innerDc.cancelAllDialogs();
       }
     }
-  }
-
-  private async executeQuery(queryText: string) {
-    return axios.get(`${baseUrl}/query?query=${queryText}`)
-    .then(function (response) {
-      var queryResponse = response.data.documents;
-      queryResponse = queryResponse.toString();
-      console.log(response);
-      return queryResponse;
-    })
-    .catch(function (error) { 
-      console.log(error);
-      return error.message;
-    })
-  }
-
-  private async executeFeed(feedText: string) {
-    return axios.post(`${baseUrl}/incrementFeed`, {
-      type: 1,
-      content: feedText
-    })
-    .then(function (response) {
-      console.log(response);
-      return response.data.title;
-
-    })
-    .catch(function (error) {
-      console.log(error);
-      return error.message;
-     
-    })
   }
 }

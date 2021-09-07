@@ -1,21 +1,32 @@
-const baseUrl = 'http://localhost:5000';
-const axios = require('axios');
+const baseUrl = 'http://localhost:5001';
+const axios = require('axios'); 
 
 export class AxiosHandler {
     public async executeQuery(queryText: string) {
         return axios.get(`${baseUrl}/query?query=${queryText}`)
         .then(function (response) {
-          var queryResponse = response.data.documents;
-          queryResponse = queryResponse.toString();
+          var queryResponse = response.data;
           console.log(response);
-          // return queryResponse;
-          return [{"abstract": "this technology has not been validated before 2.  situation might be worse if problematic disk got restarted when applying the firmware", "author": "", "created_at": null, "doc_id": 102, "link": "", "title": "high risk zone 6869 30, 6865 36, 4 high risk fleet management plan a evaluate the firmware to check the disk health, but it will take some time, and still have some risks in 1"}, {"abstract": "this technology has not been validated before 2.  situation might be worse if problematic disk got restarted when applying the firmware", "author": "", "created_at": null, "doc_id": 103, "link": "", "title": "high risk zone 6869 30, 6865 36, 4 high risk fleet management plan a evaluate the firmware to check the disk health, but it will take some time, and still have some risks in 1"}, {"abstract": "95 availability  gu completion tm speed perf  saved fcp max cpu per farm lower than 50 cts throughput 300 documents per seconds per farm analytics updates daily largest error rate lower than 10 0 farms fae disk size lower than 5 during the process of analytics modernization ecosystem business growth reduce cost  spo 4. 184cgbmonth carbonfree sql azure move fae to azure sai capacity work fcp deprecation after removing dlp scs related cogs team excellence 1es  git reduce repetitive manual work cut down avg issue handling time taken from previous deck q1 plans service scs cogs scs is azure queue service which store all the crawled documents and provide apis to access them", "author": "", "created_at": null, "doc_id": 74, "link": "", "title": "align with odsp okr customer 310m combined mau customer satisfaction handling of escalations within sla  performance  reliability 99"}, {"abstract": "com jia to double check radio monitor issue jia bao aka. mssparcoisupport spools  skjalg arstad substrate yongqiang double check local db issue sox db shield trond hansen, abhishek singh ssa related, jun yang kim bob mas team fastsox farm deployment honagliang yu dorin rusu, zoran hranj fast azure db sox db shield kevin hays, fabian maciel hernandez odspdb config db issue fabian maciel hernandez, bob ma odspcore bobu2019s sql team can also help provide suggestions on mirroring and other db health related topics from their experience of dealing with content dbs pmachine fleet management, yi ji sharepoint fleet management suzhou team soxfmmicrosoft", "author": "", "created_at": null, "doc_id": 80, "link": "", "title": "area primary contract secondary contact ownership comments scs deployment anilvatmicrosoft"}, {"abstract": "", "author": "", "created_at": null, "doc_id": 82, "link": "", "title": "common searchhostcontroller noderunner sbc manage sql db going forward manage physical machine, team and responsibility gu orchastration graduate autoshield to gridmgr recursive job domainless tds transfer fsa capacity management cpta pm transition maryan project"}, {"abstract": "msg vm image management re fin replacements in gallatin with incorrect disk size in farm 689. msg", "author": "", "created_at": null, "doc_id": 83, "link": "", "title": "topic email thread db management re need help for root cause investigation on search sev1s on 7 us farms us29us38us52us54us57us65us66 on sunday june 30"}, {"abstract": "this technology has not been validated before 2.  situation might be worse if problematic disk got restarted when applying the firmware", "author": "", "created_at": null, "doc_id": 85, "link": "", "title": "high risk zone 6869 30, 6865 36, 4 high risk fleet management plan a evaluate the firmware to check the disk health, but it will take some time, and still have some risks in 1"}, {"abstract": "how to investigate when you hit some errorissues, you can find help inside team firstly, including but not limited to search for keywords in email search for it in our wikigu tsg  overview visualstudio. com or tsgs in this package tsgs asking in gu support channel channel please try to use it, not to ping sme in person if you think its gridmgr related and not very urgent, you can also ask in this channel  grid manager support if the above steps still can not help to solve the problem, you could choose to ask for help from partner team   lets start with some specific kind of problem at the first, then expand the list in the practice, this will help us know very clearly what problem is related to gridmgrdistribution team  firstly, please check out tsgs listed here tsgs, if you find the same error there, please following what is in tsg to unblock or reach out to partner team and sme  in tsg as well   still need effort to maintain and enrich these tsgs if no tsgs for you in above path, you need to reach out to partner team which team should reach out to generally, you have several ways to determine  if you find corresponding tsg above, it contains smes or team name in it, just use it", "author": "", "created_at": null, "doc_id": 23, "link": "", "title": "precheck list includes  how to investigate the issue before reach out to partner team, which team should reach out to, and how to reach"}, {"abstract": "information cert a81ac374efe98594f7c9b4e7637e4da8d913676b was used in msit and prod.  the full history of renewal is prod is available here prod  autodeployment  full manual web view at the time, the automatic certificate management system wasnt ready yet, so the certificate was reneweddeployed following manual process", "author": "", "created_at": null, "doc_id": 26, "link": "", "title": "background got a sev1 incident 227483458  action required  breaking change ssladminv1 certs inuse with your geneva connection being revoked unmanaged  01cdf372dd2249f49bca19a1aac0fe84  tenant wide search and we need to make sure that there are no ssladminv1 certs in use"}, {"abstract": "", "author": "", "created_at": null, "doc_id": 94, "link": "", "title": "how can we do better in gu do we have enough understanding of gu tech now do we have enough understanding of the factors that affect gu now do we have enough understanding of the method we can take to help gu now do we have enough understanding of the status of gu now what is improtant in gu edog thursday  spdf  msit friday, be more alert on this  key metrics for inner ring n2 goal 95 in 11 days, 100 in 14 days farm below 3, you cant patch themserver bugs cant be fixed because corresponding branch is removed is this a thing we canshould fix telemetry for n3 farms or in the chronicle least old farms monitoring incident created, version being old scan all the farms and get all the versions invokemerlineverywhere n  3 build system not able to upgrade the farm farm temparature orchestrator will pick farm based on temparature where can be used waves for frozing the farmignored by the orchestrator flight might also depend on this add monitor for jobs, for example updatefilesonvm and altersearchtopo, so that we can find blocker sooner"}];
+          return queryResponse;
         })
         .catch(function (error) { 
           console.log(error);
           return error.message;
         })
     }
+
+    public async executeQueryByInvert(queryText: string) {
+      return axios.get(`${baseUrl}/queryByInvert?queryText=${queryText}`)
+      .then(function (response) {
+        var queryResponse = response.data;
+        console.log(response);
+        return queryResponse;
+      })
+      .catch(function (error) { 
+        console.log(error);
+        return error.message;
+      })
+  }
 
     private async executeFeed(feedText: string) {
         return axios.post(`${baseUrl}/incrementFeed`, {
@@ -24,7 +35,7 @@ export class AxiosHandler {
         })
         .then(function (response) {
           console.log(response);
-          return response.data.title;
+          return response.data;
     
         })
         .catch(function (error) {

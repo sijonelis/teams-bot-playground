@@ -35,7 +35,7 @@ export class RootDialog extends ComponentDialog {
       return await innerDc.cancelAllDialogs();
     }
 
-    switch (command) {
+    switch (command.toLowerCase()) {
       case "feedtext": {
         var feedResponse =  await this.axiosHandler.executeFeed(text);
         const feedCard = CardFactory.adaptiveCard(FeedCard.build);
@@ -44,6 +44,12 @@ export class RootDialog extends ComponentDialog {
       }
       case "query": {
         var queryResponse = await this.axiosHandler.executeQuery(text);
+        const card = CardFactory.adaptiveCard(QueryCard.build(queryResponse) );
+        await innerDc.context.sendActivity({ attachments: [card] });
+        return await innerDc.cancelAllDialogs();
+      }
+      case "querybyinvert": {
+        var queryResponse = await this.axiosHandler.executeQueryByInvert(text);
         const card = CardFactory.adaptiveCard(QueryCard.build(queryResponse) );
         await innerDc.context.sendActivity({ attachments: [card] });
         return await innerDc.cancelAllDialogs();

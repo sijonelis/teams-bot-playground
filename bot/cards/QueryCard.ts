@@ -21,7 +21,6 @@ export class QueryCard {
       "fontType": "Default",
       "size": "Large",
       "weight": "Bolder",
-      "color": "Light",
       "separator": true,
       "horizontalAlignment": "Center"
     },);
@@ -47,7 +46,7 @@ export class QueryCard {
                     {
                         "type": "Action.OpenUrl",
                         "title": "View this document",
-                        "url": element['url'] == '' ? "www.google.com" : element['url']
+                        "url": element['link'] === '' ? "www.google.com" : element['link']
                     }
                 ]
             }

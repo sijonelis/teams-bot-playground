@@ -29,14 +29,13 @@ export class AxiosHandler {
   }
 
     private async executeFeed(feedText: string) {
-        return axios.post(`${baseUrl}/incrementFeed`, {
+        return axios.post(`${baseUrl}/incrementfeed`, {
           type: 1,
           content: feedText
         })
         .then(function (response) {
           console.log(response);
           return response.data;
-    
         })
         .catch(function (error) {
           console.log(error);

@@ -38,7 +38,7 @@ export class RootDialog extends ComponentDialog {
     switch (command.toLowerCase()) {
       case "feedtext": {
         var feedResponse =  await this.axiosHandler.executeFeed(text);
-        const feedCard = CardFactory.adaptiveCard(FeedCard.build);
+        const feedCard = CardFactory.adaptiveCard(FeedCard.build());
         await innerDc.context.sendActivity({ attachments: [feedCard] });
         return await innerDc.cancelAllDialogs();
       }

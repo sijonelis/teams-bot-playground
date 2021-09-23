@@ -28,6 +28,7 @@ export class QueryCard {
     queryResponse.forEach(element => {
       var cardBody = {
         "type": "Container",
+        "separator": true,
         "items": [
             {
                 "type": "TextBlock",

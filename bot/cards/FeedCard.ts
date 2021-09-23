@@ -4,17 +4,24 @@ export class FeedCard {
     }
 
     private static buildFeedCard() {
-        return {
+        var card = {
             "type": "AdaptiveCard",
-            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-            "version": "1.3",
             "body": [
-                {
-                    "type": "TextBlock",
-                    "text": "The document has been fed successfully",
-                    "wrap": true
-                }
-            ]
-        }
+            ],
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.3"
+          }
+      
+          card['body'].push( {
+            "type": "TextBlock",
+            "text": "The document has been fed successfully",
+            "wrap": true,
+            "fontType": "Default",
+            "weight": "Bolder",
+            "separator": true,
+            "horizontalAlignment": "Center"
+          },);
+
+        return card;
     }
 }
